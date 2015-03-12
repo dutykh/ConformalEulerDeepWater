@@ -14,7 +14,8 @@ function rhs = RHS (w, dt)
     % declaration of the result and memory preallocation
     rh = zeros(N,2);    % nonlinear part of the RHS
     
-    v = turn(w, -dt);   % we integrate back the linear terms
+    % v = turn(w, -dt);   % we integrate back the linear terms
+    v = w;
     
     gam_hat = v(:,1);   % Fourier transform of the free surface elevation
     phi_hat = v(:,2);   % Fourier transform of the velocity potential

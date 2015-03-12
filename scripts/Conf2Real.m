@@ -11,5 +11,5 @@
 function x = Conf2Real (eta)
 	global sk xi
 	
-	x = xi + real(ifft(1i*sk.*fft(eta)));
+	x = xi - real(ifft(1i*sk.*fft(eta)));
 end % Conf2Real ()

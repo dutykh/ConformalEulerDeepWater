@@ -17,4 +17,4 @@ function v = turn (w, dt)
     
     v(:,1) = kf.*(cosw.*w(:,1) - omg.*sinw.*w(:,2));
     v(:,2) = kf.*(gom.*sinw.*w(:,1) + cosw.*w(:,2));
-end
+end % turn ()
