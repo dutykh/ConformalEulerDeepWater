@@ -1,7 +1,7 @@
 %%% -------------------------------------------------- %%%
 %%% Numerical solution of full Euler equations deep w  %%%
 %%%     using the conformal mapping technique          %%%
-%%% Simulation of the Peregrine breather               %%%
+%%% Simulation of the Peregrine breather (NLS)         %%%
 %%% -------------------------------------------------- %%%
 %%% For the initialisation of the breather, please,    %%%
 %%% refer to L. Shemer & L. Alperovich. 25, 051701,    %%%
@@ -14,8 +14,9 @@
 %%% GitHub: https://github.com/dutykh/                 %%%
 %%% -------------------------------------------------- %%%
 %%% Acknowledgements:                                  %%%
-%%% * Dr. Bernard Ee, Tel Aviv University, Israel      %%%
 %%% * Prof. Didier Clamond, Univ.Nice Sophia Antipolis %%%
+%%% * Dr. Bernard Ee, Tel Aviv University, Israel      %%%
+%%% * Prof. Lev Shemer, Tel Aviv University, Israel    %%%
 %%% -------------------------------------------------- %%%
 
 % We clear the workspace
