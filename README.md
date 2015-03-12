@@ -1,7 +1,7 @@
 Full Euler solver on deep water
 =======================
 
-[Peregrine breather](pics/PB_shot.png)
+![Peregrine breather](pics/PB_shot.png)
 
 The present collection of Matlab scripts is a Fourier-type pseudo-spectral solver of the full Euler equations with free surface on a fluid layer of infinite depth (the so-called *deep water approximation*). The time-dependent fluid domain is transformed into a strip using the conformal mapping technique (coined by L.V. Ovsyannikov for the first time in 1972 and developed later by A. Dyachenko *et al.* (1996)).
 
