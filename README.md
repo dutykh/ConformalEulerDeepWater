@@ -5,7 +5,7 @@ The present script is a Fourier-type pseudo-spectral solver of the full Euler eq
 
 The time integration is improved using the integrating factor technique (*i.e.* exact integration of linear terms). The solver is initialized to simulate the celebrated Peregrine breather evolution in the full Euler. We refer to the following publication for more details on this solution:
 
-* L. Shemer & L. Alperovich. Peregrine breather revisited. Phys. Fluids, **25**, 051701, 2013
+* L. Shemer & L. Alperovich. *Peregrine breather revisited*. Phys. Fluids, **25**, 051701, 2013
 
 Please, don't hesitate to contact the author with any questions, remarks and bug reports. The latest contact details can be found on this web page:
 
