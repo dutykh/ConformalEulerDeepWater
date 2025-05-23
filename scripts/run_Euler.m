@@ -90,6 +90,7 @@ eta0 = real(Env).*win;			% windowed free surface elevation
 err = inf;
 tol = 1e-14;
 while (err > tol)
+    
 	chi0 = Conf2Real(eta0);
 
 	xi1 = x0 + chi0;				% shifted space variable
@@ -102,6 +103,7 @@ while (err > tol)
 	
 	err = norm(eta1 - eta0, inf);
 	eta0 = eta1;
+
 end % while ()
 eta0 = eta0 - mean(eta0);		% we remove the mean
 
@@ -126,6 +128,9 @@ err1 = 1.0;   				% local error guess
 tloc = 0.0;   				% local time variable
 pf   = false;   			% plot flag
 
+%%% Post-processing control:
+compute_velocities = false;	% toggle for computing velocities in post-processing
+
 %%% Define the graphic window:
 FigHandle = figure(1);
 set(FigHandle, 'Position', [100, 100, 849, 495]);
@@ -144,6 +149,7 @@ Energy = [];  % List of the (total) energy values at different moments of time
 Time = [];    % finally the list of times when we compute the invariants
 
 while (t < Tf) % main loop in time
+
     t = t + dt; tloc = tloc + dt;
     
     % We implement the embedded Cash-Karp method of the order 5(4):
@@ -166,12 +172,15 @@ while (t < Tf) % main loop in time
 
     % adjust the time step 
     if ((tloc + dt > dtw) && (~pf))
+
         dt = dtw - tloc;
         pf = true;
+
     end % if (tloc)
     
     % if the time to plot has come:
     if ((tloc >= dtw - tol) && (pf))
+
         tloc = 0.0; pf = false;   % we reset the counters
         eta = real(ifft(v(:,1))); % find the free surface elevation in real space
         Plot(eta, t);             % plot the result
@@ -194,6 +203,53 @@ while (t < Tf) % main loop in time
         Mass = [Mass; mass];
         Moment = [Moment; moment];
         Energy = [Energy; energy];
+        
+        % Compute velocities if toggle is enabled:
+        if (compute_velocities)
+
+            %%% -------------------------------------------------- %%%
+            %%% Surface velocity computation                       %%%
+            %%% Contributed by: Prof. Francesco Fedele             %%%
+            %%% Associate Professor, School of Civil &             %%%
+            %%% Environmental Engineering, Georgia Institute       %%%
+            %%% of Technology, Atlanta, Georgia, USA               %%%
+            %%% -------------------------------------------------- %%%
+            
+            % Compute required derivatives in conformal space:
+            phi_xi = real(ifft(1i*k.*v(:,2)));      % xi derivative of velocity potential
+            psi_xi = -real(ifft(ka.*v(:,2)));       % xi derivative of stream function
+            chi_xi = 1 + real(ifft(ka.*v(:,1)));    % xi derivative of conformal mapping
+            chi_xixi = real(ifft(1i*k.*ka.*v(:,1))); % second xi derivative
+            eta_xi = real(ifft(1i*k.*v(:,1)));      % xi derivative of free surface
+            eta_xixi = -real(ifft(k.^2.*v(:,1)));   % second xi derivative
+            
+            % Compute physical space derivatives:
+            % First x-derivative of free surface elevation
+            eta_x = eta_xi ./ chi_xi;
+            
+            % Second x-derivative of free surface elevation
+            eta_xx = (eta_xixi .* chi_xi - eta_xi .* chi_xixi) ./ (chi_xi.^3);
+            
+            % Jacobian of the conformal transformation:
+            J = chi_xi.^2 + eta_xi.^2;
+            
+            % Compute surface velocities (U horizontal, V vertical):
+            % Using the complex velocity formulation
+            U = (phi_xi .* chi_xi + psi_xi .* eta_xi) ./ J;  % horizontal velocity
+            V = -(psi_xi .* chi_xi - phi_xi .* eta_xi) ./ J; % vertical velocity
+            
+            % Compute xi derivatives of velocities:
+            U_xi = real(ifft(1i*k.*fft(U)));
+            V_xi = real(ifft(1i*k.*fft(V)));
+            
+            % Transform to physical x-derivatives:
+            U_x = (U_xi .* chi_xi - V_xi .* eta_xi) ./ J; % horizontal derivative of U
+            V_x = (U_xi .* eta_xi + V_xi .* chi_xi) ./ J; % horizontal derivative of V
+            
+            % Note: The velocities U, V and their derivatives U_x, V_x
+            % are now available for further analysis or storage
+        end % if (compute_velocities)
+
     end % if ()
 
 end % while (t)
