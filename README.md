@@ -56,6 +56,15 @@ When enabled, the solver computes:
 * **`Conf2Real.m`**: Transforms from conformal space to physical coordinates
 * **`Plot.m`**: Real-time visualization of surface elevation and Fourier spectrum
 
+## Documentation
+
+* **`doc/VelocityField.tex`**: Mathematical derivation of surface velocities and gradients in conformal mapping for water waves. This document provides:
+  - Derivation of velocity components from the complex potential
+  - Transformation formulas between physical and conformal coordinates
+  - Laplace equation in conformal coordinates and the relationship between velocity potential and streamfunction
+  - Explicit formulas for computing surface velocity gradients
+  - Authors: Francesco Fedele (Georgia Tech) and Denys Dutykh (Khalifa University)
+
 ## Physical Problem
 
 The solver is initialized to simulate the celebrated Peregrine breather evolution in the full Euler equations. This is a fundamental nonlinear wave solution that models extreme wave events. We refer to the following publication for more details:

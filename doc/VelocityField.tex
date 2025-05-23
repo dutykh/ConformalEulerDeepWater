@@ -1,0 +1,219 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath, amssymb, graphicx, physics}
+\usepackage{geometry}
+
+\geometry{margin=1in}
+
+\title{Derivation of Surface Velocities and Gradients in Conformal Mapping for Water Waves}
+
+\author{Francesco Fedele\thanks{Associate Professor, School of Civil \& Environmental Engineering and School of Electrical \& Computer Engineering, Georgia Institute of Technology, Atlanta, GA, USA} \and Denys Dutykh\thanks{Khalifa University of Science and Technology, Abu Dhabi, UAE}}
+
+\date{May 23 2025}
+
+\begin{document}
+
+\maketitle
+
+\section*{1. Introduction}
+
+We consider a two-dimensional inviscid and incompressible fluid flow with a free surface described by the graph \( z = \eta(x,t) \). The velocity field is derived from a velocity potential \( \phi(x,z,t) \), and an associated streamfunction \( \psi(x,z,t) \). We assume irrotational flow, so the complex potential \( F = \phi + \mathrm{i}\psi \) is analytic in the fluid domain.
+
+\section*{2. Conformal Mapping Formulation}
+
+To simplify the geometry of the fluid domain, we introduce a conformal map:
+\[
+z = x(\xi,t) + \mathrm{i} \eta(\xi,t),
+\]
+where \( \xi \in \mathbb{R} \) parameterizes the real axis in the lower complex plane and maps to the physical fluid domain. On the surface, \( \xi \mapsto z = x(\xi,t) + \mathrm{i} \eta(\xi,t) \). The complex potential is analytic, so we can write:
+\[
+F(\xi, t) = \phi(\xi,t) + \mathrm{i}\psi(\xi,t),
+\]
+and this function is analytic in the conformal domain as well.
+
+\section*{3. Cauchy-Riemann Conditions and Velocity Components}
+
+Since the complex function \( F = \phi + \mathrm{i}\psi \) is analytic in the conformal variable \( \xi \), it satisfies the Cauchy-Riemann (CR) equations:
+\[
+\partial_x \phi = \partial_z \psi, \qquad \partial_z \phi = -\partial_x \psi.
+\]
+These conditions are equivalent to:
+\begin{itemize}
+    \item \textbf{Incompressibility:} \( \nabla \cdot \mathbf{u} = \partial_x u + \partial_z w = 0 \)
+    \item \textbf{Irrotationality:} \( \nabla \times \mathbf{u} = \partial_x w - \partial_z u = 0 \)
+\end{itemize}
+Hence, the scalar potential \( \phi \) and streamfunction \( \psi \) are harmonic conjugates and both satisfy Laplace’s equation:
+\[
+\nabla^2 \phi = \nabla^2 \psi = 0.
+\]
+
+On the free surface \( z = \eta(x,t) \), we describe the horizontal and vertical velocity components using the chain rule and conformal mapping variables. In conformal coordinates where \( z = x(\xi) + \mathrm{i} \eta(\xi) \), the physical velocity components projected along the surface are:
+\[
+U = \frac{1}{J} \left( \phi_\xi \chi + \psi_\xi \gamma \right), \qquad
+W = \frac{1}{J} \left( \psi_\xi \chi - \phi_\xi \gamma \right),
+\]
+where:
+\[
+\chi = \frac{d x}{d \xi}, \quad \gamma = \frac{d \eta}{d \xi}, \quad J = \chi^2 + \gamma^2.
+\]
+
+These expressions provide the horizontal velocity \( U \) and vertical velocity \( W \) on the surface in terms of the conformal derivatives of \( \phi \) and \( \psi \). They follow from evaluating the real and imaginary parts of the complex velocity \( \frac{dF}{dz} \), using the chain rule:
+\[
+\frac{dF}{dz} = \frac{dF/d\xi}{dz/d\xi} = \frac{\phi_\xi + \mathrm{i}\psi_\xi}{\chi + \mathrm{i}\gamma},
+\]
+from which:
+\[
+U - \mathrm{i}W = \frac{\phi_\xi + \mathrm{i}\psi_\xi}{\chi + \mathrm{i}\gamma}.
+\]
+Taking real and imaginary parts yields the expressions above for \( U \) and \( W \).
+
+\section*{4. Velocities on the Free Surface}
+
+Let \( \chi = x_\xi \), \( \gamma = \eta_\xi \). The Jacobian of the conformal transformation is:
+\[
+J = \chi^2 + \gamma^2.
+\]
+The complex velocity on the surface is:
+\[
+U - \mathrm{i}W = \frac{dF}{dz} = \frac{F_\xi}{z_\xi} = \frac{\phi_\xi + \mathrm{i}\psi_\xi}{\chi + \mathrm{i}\gamma}.
+\]
+
+Multiplying numerator and denominator by \( \chi - \mathrm{i}\gamma \), we get:
+\[
+U - \mathrm{i}W = \frac{(\phi_\xi + \mathrm{i}\psi_\xi)(\chi - \mathrm{i}\gamma)}{J}.
+\]
+
+Splitting into real and imaginary parts:
+\begin{align*}
+U &= \frac{\phi_\xi \chi + \psi_\xi \gamma}{J}, \\
+W &= \frac{\psi_\xi \chi - \phi_\xi \gamma}{J}.
+\end{align*}
+
+\section*{5. Laplace Equation in Conformal Coordinates and Derivation of~$\psi_{\xi}$}
+
+In potential flow theory, both the velocity potential $\phi(x,z)$ and the streamfunction $\psi(x,z)$ satisfy the Laplace equation in the fluid domain:
+\[
+\nabla^2 \phi = 0, \qquad \nabla^2 \psi = 0.
+\]
+
+Under a conformal mapping, we introduce a complex coordinate $\zeta = \xi + \mathrm{i}\eta$ that maps to the physical domain $z = x + \mathrm{i}y$. For our water wave problem, we parameterize the free surface using $\xi$ (with $\eta = 0$ on the surface), so that $z(\xi,0,t) = x(\xi,t) + \mathrm{i}\eta(\xi,t)$ describes the surface shape.
+
+Since the complex potential $F = \phi + \mathrm{i}\psi$ is analytic in both the physical and conformal domains, it satisfies the Laplace equation in conformal coordinates:
+\[
+\frac{\partial^2 F}{\partial \xi^2} + \frac{\partial^2 F}{\partial \eta^2} = 0.
+\]
+
+On the free surface (where the conformal coordinate $\eta = 0$), we can express the velocity potential and streamfunction as functions of $\xi$ alone. The key insight is that $F(\xi,0,t)$ remains analytic in $\xi$, which means its real and imaginary parts are related by the Hilbert transform.
+
+Specifically, if we denote surface values as $\phi(\xi) \equiv \phi(\xi,0,t)$ and $\psi(\xi) \equiv \psi(\xi,0,t)$, then the Cauchy-Riemann relations give:
+\[
+\psi_\xi = - \mathcal{H}[\phi_\xi] \quad \text{and} \quad \phi_\xi = \mathcal{H}[\psi_\xi],
+\]
+where \(\mathcal{H}\) denotes the Hilbert transform.
+
+In Fourier space, the Hilbert transform acts as multiplication by $-\mathrm{i}\,\text{sign}(k)$, where $k$ is the wavenumber. Therefore:
+\[
+\widehat{\psi_\xi}(k) = -\mathrm{i}\,\text{sign}(k) \cdot \widehat{\phi_\xi}(k).
+\]
+
+Since $\widehat{\phi_\xi}(k) = \mathrm{i}k\widehat{\phi}(k)$, we have:
+\[
+\widehat{\psi_\xi}(k) = -\mathrm{i}\,\text{sign}(k) \cdot \mathrm{i}k \cdot \widehat{\phi}(k) = -|k| \cdot \widehat{\phi}(k),
+\]
+where we used the fact that $\mathrm{i} \cdot \text{sign}(k) \cdot \mathrm{i}k = -|k|$.
+
+Therefore, in physical space:
+\[
+\psi_\xi = \mathcal{F}^{-1}[-|k| \cdot \widehat{\phi}(k)] = \text{ifft} \left( -|k| \cdot \text{fft}(\phi) \right).
+\]
+
+Similarly, we can express $\phi_\xi$ in terms of $\psi$:
+\[
+\phi_\xi = \mathcal{F}^{-1}[|k| \cdot \widehat{\psi}(k)] = \text{ifft} \left( |k| \cdot \text{fft}(\psi) \right).
+\]
+
+These relations allow us to compute the streamfunction derivative from the velocity potential (or vice versa) using only surface data and Fourier transforms.
+
+\section*{6. Derivatives of Velocities on the Surface}
+
+To compute the spatial derivatives $u_x$ and $w_x$ on the free surface $z = \eta(x,t)$, we begin with the total derivatives of the horizontal and vertical velocities in terms of the conformal parameter $\xi$:
+\[
+\frac{dU}{d\xi} = u_x \frac{dx}{d\xi} + u_z \frac{d\eta}{d\xi}, \qquad 
+\frac{dW}{d\xi} = w_x \frac{dx}{d\xi} + w_z \frac{d\eta}{d\xi}.
+\]
+
+Let us denote:
+\[
+\chi = \frac{dx}{d\xi}, \qquad \gamma = \frac{d\eta}{d\xi}.
+\]
+
+Then we can write:
+\[
+    U_\xi = u_x \chi + u_z \gamma, \qquad
+    W_\xi = w_x \chi + w_z \gamma.
+\]
+
+Now, we apply the following conditions:
+\begin{itemize}
+  \item \textbf{Incompressibility:} $\nabla \cdot \vec{u} = 0 \;\Longrightarrow\; u_x + w_z = 0 \;\Longrightarrow\; w_z = -u_x$.
+  \item \textbf{Irrotationality:}  $\nabla \times \vec{u} = 0 \;\Longrightarrow\; w_x - u_z = 0 \;\Longrightarrow\; u_z = w_x$.
+\end{itemize}
+Substituting into the expressions for \(U_\xi\) and \(W_\xi\), we get:
+\[
+    U_\xi = u_x \chi + w_x \gamma, \qquad
+    W_\xi = w_x \chi - u_x \gamma.
+\]
+
+We now solve this linear system for \(u_x\) and \(w_x\). Writing in matrix form:
+\[
+\begin{bmatrix}
+U_\xi \\
+W_\xi
+\end{bmatrix}
+=
+\begin{bmatrix}
+\chi & \gamma \\
+-\gamma & \chi
+\end{bmatrix}
+\begin{bmatrix}
+u_x \\
+w_x
+\end{bmatrix}.
+\]
+
+The coefficient matrix is orthogonal (with determinant $\chi^2 + \gamma^2 = J$), so its inverse is:
+\[
+\frac{1}{J}
+\begin{bmatrix}
+\chi & -\gamma \\
+\gamma & \chi
+\end{bmatrix}.
+\]
+
+Hence, solving for the velocity gradients:
+\[
+\begin{bmatrix}
+u_x \\
+w_x
+\end{bmatrix}
+=
+\frac{1}{\chi^2 + \gamma^2}
+\begin{bmatrix}
+\chi & -\gamma \\
+\gamma & \chi
+\end{bmatrix}
+\begin{bmatrix}
+U_\xi \\
+W_\xi
+\end{bmatrix}.
+\]
+
+Explicitly,
+\[
+u_x = \frac{1}{\chi^2 + \gamma^2} \left( \chi U_\xi - \gamma W_\xi \right), \qquad
+w_x = \frac{1}{\chi^2 + \gamma^2} \left( \gamma U_\xi + \chi W_\xi \right).
+\]
+
+This provides a consistent way to compute the physical gradients of the velocity field on the free surface, using only conformal quantities \(\chi\), \(\gamma\), \(U_\xi\), and \(W_\xi\), which can all be derived from surface data.
+
+\end{document}
