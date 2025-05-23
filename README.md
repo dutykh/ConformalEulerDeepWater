@@ -93,7 +93,7 @@ The author would like to thank the following colleagues (in alphabetical order) 
   *Contributions: Peregrine breather initialization and validation*
 
 * **[Francesco Fedele](https://ce.gatech.edu/directory/person/francesco-fedele)**, Associate Professor, School of Civil & Environmental Engineering and School of Electrical & Computer Engineering, [Georgia Institute of Technology](https://gatech.edu/), Atlanta, GA, USA  
-  *Contributions: Surface velocity computation module and physical derivatives transformation*
+  *Contributions: Surface velocity computation module and physical derivatives transformation. Special thanks for initiating and preparing the initial draft of the mathematical documentation (VelocityField.tex)*
 
 * **[Lev Shemer](http://www.eng.tau.ac.il/~shemer/)**, [Tel Aviv University](http://english.tau.ac.il/), [School of Mechanical Engineering](http://engineering.tau.ac.il/), Israel  
   *Contributions: Peregrine breather theory and experimental validation*
