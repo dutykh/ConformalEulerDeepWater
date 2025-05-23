@@ -1,15 +1,26 @@
 %%% -------------------------------------------------- %%%
-%%% Author: Denys Dutykh, CNRS -- LAMA, Univ of Savoie %%%
-%%% E-mail: Denys.Dutykh@univ-savoie.fr                %%%
-%%% Web:    http://www.denys-dutykh.com/               %%%
-%%% Blog:   http://dutykh.github.io/                   %%%
+%%% Author: Denys Dutykh, Khalifa University           %%%
+%%% of Science and Technology, Abu Dhabi, UAE          %%%
+%%% Date:   2025-05-23                                 %%%
 %%% GitHub: https://github.com/dutykh/                 %%%
 %%% -------------------------------------------------- %%%
 
-% Right-hand side function
+%> Description: Compute nonlinear right-hand side for conformal Euler evolution.
+%> Inputs:
+%>    w  - Nx2 matrix of [eta_hat, phi_hat] in Fourier space.
+%>    dt - time increment for linear rotation step.
+%> Globals:
+%>    N, sk, k, ka (grid size, spectral operators).
+%> Outputs:
+%>    rhs - Nx2 matrix of right-hand sides in Fourier space.
+
 function rhs = RHS (w, dt)
 
     global N sk k ka
+
+    % Validate inputs
+    if ~isnumeric(w) || size(w,2)~=2, error('RHS:w','w must be an Nx2 numeric array'); end
+    if ~isnumeric(dt), error('RHS:dt','dt must be numeric'); end
 
     % declaration of the result and memory preallocation
     rh = zeros(N,2);    % nonlinear part of the RHS
@@ -28,6 +39,7 @@ function rhs = RHS (w, dt)
     
     chi_xi = 1 - gamH;                  % dX/d\xi expressed in terms of H[\gam_xi]
     J = chi_xi.^2 + gam_xi.^2;          % Jacobian of the transform
+    J(J<eps) = eps;                     % avoid division by zero
     
     phi_hat_xi = 1i*k.*phi_hat;         % differentiate the potential in the Fourier space
     phi_xi = real(ifft(phi_hat_xi));    % and come back to the real space
@@ -47,4 +59,5 @@ function rhs = RHS (w, dt)
     rh(:,2) = fft(0.5*(psi_xi.^2-phi_xi.^2)./J + phi_xi.*HpsiJ);
     
     rhs = turn(rh, dt);  % we rotate the RHS and return the result
+
 end % RHS ()

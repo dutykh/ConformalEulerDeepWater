@@ -7,20 +7,24 @@
 %%% refer to L. Shemer & L. Alperovich. 25, 051701,    %%%
 %%% "Peregrine breather revisited", Phys. Fluids, 2013 %%%
 %%% -------------------------------------------------- %%%
-%%% Author: Denys Dutykh, CNRS -- LAMA, Univ of Savoie %%%
-%%% E-mail: Denys.Dutykh@univ-savoie.fr                %%%
-%%% Web:    http://www.denys-dutykh.com/               %%%
-%%% Blog:   http://dutykh.github.io/                   %%%
+%%% Author: Denys Dutykh, Khalifa University           %%%
+%%% of Science and Technology, Abu Dhabi, UAE          %%%
+%%% Date:   2025-05-23                                 %%%
 %%% GitHub: https://github.com/dutykh/                 %%%
 %%% -------------------------------------------------- %%%
 %%% Acknowledgements:                                  %%%
 %%% * Prof. Didier Clamond, Univ.Nice Sophia Antipolis %%%
 %%% * Dr. Bernard Ee, Tel Aviv University, Israel      %%%
 %%% * Prof. Lev Shemer, Tel Aviv University, Israel    %%%
+%%% * Prof. Francesco Fedele, Professor in the School  %%%
+%%% of Civil and Environmental Engineering and in      %%%
+%%% the School of Electrical and Computer Engineering  %%%
+%%% at Georgia Institute of Technology, GA, USA        %%%
 %%% -------------------------------------------------- %%%
 
 % We clear the workspace
-close all, clear all
+close all;
+clearvars;
 format longE
 
 % Declaration of global variables
@@ -53,21 +57,12 @@ xi = (1-N/2:N/2)'*dxi;  		% \xi-space discretization
 k = [0:N/2 1-N/2:-1]'*pi/l;
 
 % Window function for the free surface elevation:
-win = zeros(N,1);
-for j=1:length(xi), % now create window function which will be multiplied with the amplitude function
-    if (abs(xi(j)) <= l) & (abs(xi(j)) > 0.5*l)
-        win(j) = 0.0;
-    elseif (abs(xi(j)) <= 0.5*l) & (abs(xi(j)) > 0.5*l - 2.0*l0)
-        if xi(j) < 0,
-            coef = 1/(2*l0);
-        else 
-        	coef = -1/(2*l0);
-        end;
-        win(j) = coef*(xi(j)) + 0.25*l/l0;
-    else 
-    	win(j) = 1.0;
-    end
-end
+win = ones(N,1);
+mask1 = abs(xi)<=l & abs(xi)>0.5*l;
+win(mask1) = 0;
+mask2 = abs(xi)<=0.5*l & abs(xi)>0.5*l-2*l0;
+coef = -(xi(mask2)./abs(xi(mask2)))*(1/(2*l0));
+win(mask2) = coef.*xi(mask2) + 0.25*l/l0;
 
 % Exponential de-aliasing treatment proposed by T. Hou et al.:
 Lambd = 15;

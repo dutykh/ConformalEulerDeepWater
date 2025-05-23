@@ -22,3 +22,5 @@ The author would like to thank the following colleagues (in alphabetical order) 
 * [Bernard Ee](https://www.researchgate.net/profile/Bernard_Ee2), [Tel Aviv University](http://english.tau.ac.il/), [School of Mechanical Engineering](http://engineering.tau.ac.il/), Israel
 
 * [Lev Shemer](http://www.eng.tau.ac.il/~shemer/), [Tel Aviv University](http://english.tau.ac.il/), [School of Mechanical Engineering](http://engineering.tau.ac.il/), Israel
+
+* Prof. Francesco Fedele, Associate Professor in the School of Civil and Environmental Engineering and in the School of Electrical and Computer Engineering, [Georgia Institute of Technology](https://ce.gatech.edu/directory/person/francesco-fedele), USA
