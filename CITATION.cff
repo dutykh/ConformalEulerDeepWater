@@ -1,0 +1,67 @@
+# Dr. Denys Dutykh (Mathematics Department, Khalifa University of Science and Technology, Abu Dhabi, UAE)
+cff-version: 1.2.0
+message: "No article accompanies this code: if you use it, please cite the software as given in this file."
+title: "ConformalEulerDeepWater: the full Euler equations of water waves in deep water, in conformal variables, by a Fourier pseudo-spectral method"
+type: software
+authors:
+  - family-names: Dutykh
+    given-names: Denys
+    affiliation: "Khalifa University of Science and Technology"
+    orcid: "https://orcid.org/0000-0001-5247-2788"
+repository-code: "https://github.com/dutykh/ConformalEulerDeepWater"
+license: MIT
+version: 1.1.0
+date-released: "2026-11-14"
+keywords:
+  - water-waves
+  - euler-equations
+  - free-surface-flow
+  - nonlinear-waves
+  - peregrine-breather
+  - rogue-waves
+  - conformal-mapping
+  - pseudo-spectral
+  - numerical-methods
+  - fluid-dynamics
+  - matlab
+  - octave
+abstract: >-
+  MATLAB scripts, which also run in GNU Octave, solving the full Euler equations of irrotational surface gravity
+  waves in deep water, written in conformal variables, by a Fourier pseudo-spectral method with an exponential filter,
+  exact integration of the linear terms and an adaptive embedded Runge–Kutta scheme of Cash and Karp. The example is
+  the focusing of a Peregrine breather; the surface velocities and their horizontal derivatives can also be computed.
+references:
+  - type: article
+    title: Analytical Description of the Free Surface Dynamics of an Ideal Fluid (Canonical Formalism and Conformal
+      Mapping)
+    authors:
+    - family-names: Dyachenko
+      given-names: A. I.
+    - family-names: Kuznetsov
+      given-names: E. A.
+    - family-names: Spector
+      given-names: M. D.
+    - family-names: Zakharov
+      given-names: V. E.
+    journal: Physics Letters A
+    volume: 221
+    issue: 1-2
+    start: 73
+    end: 79
+    year: 1996
+    month: 9
+    doi: 10.1016/0375-9601(96)00417-3
+  - type: article
+    title: Peregrine Breather Revisited
+    authors:
+    - family-names: Shemer
+      given-names: L.
+    - family-names: Alperovich
+      given-names: L.
+    journal: Physics of Fluids
+    volume: 25
+    issue: '5'
+    start: '051701'
+    year: 2013
+    month: 5
+    doi: 10.1063/1.4807055
