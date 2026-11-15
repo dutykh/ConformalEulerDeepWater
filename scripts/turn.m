@@ -5,7 +5,9 @@
 %%% GitHub: https://github.com/dutykh/                 %%%
 %%% -------------------------------------------------- %%%
 
-%%% Description: Advance solution through one linear rotation step with spectral filter.
+%%% Description: Rotation by the exact flow of the linear part L of the equations, followed by
+%%%    the spectral filter: v = kf.*exp(-dt*L)*w, so that turn(w, -dt) advances w by the time dt.
+%%%    For each wavenumber, eta_hat and phi_hat turn at the frequency omega = sqrt(g*|k|).
 %%% Inputs:
 %%%    w  - Nx2 numeric array of Fourier coefficients [eta_hat, phi_hat].
 %%%    dt - time increment for rotation (scalar).

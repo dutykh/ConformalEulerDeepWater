@@ -10,8 +10,8 @@ authors:
     orcid: "https://orcid.org/0000-0001-5247-2788"
 repository-code: "https://github.com/dutykh/ConformalEulerDeepWater"
 license: MIT
-version: 1.1.0
-date-released: "2026-11-14"
+version: 1.2.0
+date-released: "2026-11-15"
 keywords:
   - water-waves
   - euler-equations
@@ -28,8 +28,10 @@ keywords:
 abstract: >-
   MATLAB scripts, which also run in GNU Octave, solving the full Euler equations of irrotational surface gravity
   waves in deep water, written in conformal variables, by a Fourier pseudo-spectral method with an exponential filter,
-  exact integration of the linear terms and an adaptive embedded Runge–Kutta scheme of Cash and Karp. The example is
-  the focusing of a Peregrine breather; the surface velocities and their horizontal derivatives can also be computed.
+  exact integration of the linear terms (integrating factor of Lawson) and an adaptive embedded Runge–Kutta scheme of
+  Cash and Karp. The example is the Peregrine breather of the wave-tank experiment of Shemer and Alperovich (2013),
+  followed from the wavemaker to the distance where the Peregrine solution has its maximum; the surface velocities and
+  their horizontal derivatives can also be computed.
 references:
   - type: article
     title: Analytical Description of the Free Surface Dynamics of an Ideal Fluid (Canonical Formalism and Conformal

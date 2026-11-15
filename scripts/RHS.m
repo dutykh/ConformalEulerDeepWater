@@ -5,10 +5,13 @@
 %%% GitHub: https://github.com/dutykh/                 %%%
 %%% -------------------------------------------------- %%%
 
-%> Description: Compute nonlinear right-hand side for conformal Euler evolution.
+%> Description: Compute nonlinear right-hand side for conformal Euler evolution, in the
+%>    variable w(s) = exp(-s*L)*u(t + s) of the integrating factor, where u = [eta_hat, phi_hat]
+%>    and L is the linear part of the equations: the nonlinear terms N are evaluated at the
+%>    physical state u = exp(s*L)*w of the stage and rotated back, rhs = exp(-s*L)*N(u).
 %> Inputs:
-%>    w  - Nx2 matrix of [eta_hat, phi_hat] in Fourier space.
-%>    dt - time increment for linear rotation step.
+%>    w  - Nx2 matrix of [eta_hat, phi_hat] in Fourier space, in the rotated variable.
+%>    dt - time s of the stage, counted from the start of the time step.
 %> Globals:
 %>    N, sk, k, ka (grid size, spectral operators).
 %> Outputs:
@@ -25,8 +28,7 @@ function rhs = RHS (w, dt)
     % declaration of the result and memory preallocation
     rh = zeros(N,2);    % nonlinear part of the RHS
     
-    % v = turn(w, -dt);   % we integrate back the linear terms
-    v = w;
+    v = turn(w, -dt);   % we integrate back the linear terms: the state exp(dt*L)*w
     
     gam_hat = v(:,1);   % Fourier transform of the free surface elevation
     phi_hat = v(:,2);   % Fourier transform of the velocity potential

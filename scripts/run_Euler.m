@@ -30,25 +30,33 @@ format longE
 % Declaration of global variables
 global et0 gom k ka kf k0 l omg omega sk xi N
 
-%%% Physical parameters of the breather:
-g    = 9.81;					% gravity acceleration
-T0   = 0.75;					% carrier wave period
-et0  = 0.01;					% characteristic wave amplitude
-x0   = -17.74;					% initial position (center) of the breather
-om0  = 2*pi/T0;					% wave frequency
-k0   = om0^2/g;					% wavenumber found from the dispersion relation
-l0   = 2*pi/k0;					% wavelength
-a0   = et0/sqrt(2);		    	% carrier wave amplitude
+%%% Physical parameters of the breather: the experiment of Shemer & Alperovich (2013) in a
+%%% wave tank 18 m long, with water 0.6 m deep (k0*h = 7: deep water for the carrier), the
+%%% wavemaker at x = 0 and wave gauges from 1.85 m to 13.3 m. All quantities in SI units.
+g    = 9.81;					% gravity acceleration (m/s^2)
+T0   = 0.587;					% carrier wave period (s)
+et0  = 0.01;					% amplitude zeta0 of the carrier, far from the hump (m)
+X0   = 9.0;					% distance from the wavemaker to the maximum of the breather (m)
+Xend = X0;					% distance travelled by the centre of the group at the end (m)
+om0  = 2*pi/T0;					% wave frequency (rad/s)
+k0   = om0^2/g;					% wavenumber found from the dispersion relation (1/m)
+l0   = 2*pi/k0;					% wavelength (m)
+a0   = et0/sqrt(2);		    	% characteristic amplitude of the envelope (m)
 epsi = a0*k0;					% characteristic wave steepness
-cg   = 0.5*sqrt(g/k0);			% wave group speed in deep water
-Tmax = -30.30;					% time where max amplitude is reached 
-								% (computed from the analytical solution)
+cg   = 0.5*sqrt(g/k0);			% wave group speed in deep water (m/s)
+
+% With these values, k0 = 11.68 1/m, l0 = 0.538 m, cg = 0.458 m/s and epsi = 0.0826. Up to X0
+% the slope of the surface stays below 24 degrees. Followed beyond X0, towards the last gauge
+% at 13.3 m (Xend = 13.3), the crests passing through the peak of the group steepen beyond
+% 45 degrees near 11 m and, with N = 32768, overturn near 12 m: the computation enters the onset
+% of breaking, where the exponential filter removes energy (3 to 4 per cent by 13.3 m) and the
+% crests depend on the number of Fourier modes.
 
 %%% Numerical parameters:
 N = 16384;               		% number of Fourier modes in discrete solution
 
 %%% Definition of the computational domain:
-l = 35.0*l0;            		% half-length of the domain in \xi space
+l = 35.0*l0;            		% half-length of the domain in \xi space (m)
 dxi = 2*l/N;            		% distance between two \xi-points
 xi = (1-N/2:N/2)'*dxi;  		% \xi-space discretization
 
@@ -56,13 +64,10 @@ xi = (1-N/2:N/2)'*dxi;  		% \xi-space discretization
 % vector of wavenumbers:
 k = [0:N/2 1-N/2:-1]'*pi/l;
 
-% Window function for the free surface elevation:
-win = ones(N,1);
-mask1 = abs(xi)<=l & abs(xi)>0.5*l;
-win(mask1) = 0;
-mask2 = abs(xi)<=0.5*l & abs(xi)>0.5*l-2*l0;
-coef = -(xi(mask2)./abs(xi(mask2)))*(1/(2*l0));
-win(mask2) = coef.*xi(mask2) + 0.25*l/l0;
+% Window of the wave group. The wavemaker of the experiment runs for 70 periods, tapered over
+% the first and the last two; the group moves at cg = l0/(2*T0), so in space it occupies
+% 35 wavelengths, the half of the domain, with tapers one wavelength long at both ends:
+window = @(x) min(1, max(0, (0.5*l - abs(x))/l0));
 
 % Exponential de-aliasing treatment proposed by T. Hou et al.:
 Lambd = 15;
@@ -78,34 +83,30 @@ omega = sqrt(g*ka);
 omg = omega/g;
 gom = g./omega; gom(1) = 0.0;
 
-%%% Initial condition specification in the conformal space:
-xi1 = x0 + xi;					% shifted space variable
-Xit = epsi*om0*(xi1/cg - Tmax); % scaled time variable
-Xis  = epsi^2*k0*xi1;			% scaled space variable
-% Peregrine's analytical solution:
-A   = sqrt(2)*(1 - 4*(1-4*1i*Xis)./(1 + 4*Xit.^2 + 16*Xis.^2)).*exp(-2.0*1i*Xis);
-Env = a0*A.*exp(1i*k0*xi1);		% wave envelope
-eta0 = real(Env).*win;			% windowed free surface elevation
+%%% Initial condition: the wave train at the time t = 0 when the centre of the group leaves the
+%%% wavemaker. At the distance x from the wavemaker and the time t, the Peregrine breather of the
+%%% spatial NLS equation is, after Eqs. (1), (2) and (4) of Shemer & Alperovich (2013),
+%%%   zeta = Re[a0*A*exp(i*(k0*x - om0*t))],
+%%%   A = -sqrt(2)*(1 - 4*(1 - 4i*Xis)/(1 + 4*Xit^2 + 16*Xis^2))*exp(-2i*Xis),
+%%% with the scaled time Xit = epsi*om0*(x/cg - t) and the scaled distance Xis = epsi^2*k0*(x - X0)
+%%% (xi and eta in the article): the envelope grows from 1.37*et0 at the wavemaker (Xis = -0.717)
+%%% to 3*et0 at x = X0, where the Peregrine solution has its maximum at the time X0/cg.
+Xis = @(x) epsi^2*k0*(x - X0);	% scaled space variable
+Xit = @(x) epsi*om0*x/cg;		% scaled time variable at t = 0
+A   = @(x) -sqrt(2)*(1 - 4*(1 - 4i*Xis(x))./(1 + 4*Xit(x).^2 + 16*Xis(x).^2)).*exp(-2i*Xis(x));
+surface = @(x) real(a0*A(x).*exp(1i*k0*x)).*window(x);
 
+% The elevation is a function of the physical abscissa x = \xi - H[eta]: the fixed point
+% eta(\xi) = surface(x(\xi)) is found by iteration. The calm water outside the group stays at
+% eta = 0, the still water level of the tank.
+eta0 = surface(xi);
 err = inf;
 tol = 1e-14;
 while (err > tol)
-    
-	chi0 = Conf2Real(eta0);
-
-	xi1 = x0 + chi0;				% shifted space variable
-	Xit = epsi*om0*(xi1/cg - Tmax); % scaled time variable
-	Xis  = epsi^2*k0*xi1;			% scaled space variable
-	% Peregrine's analytical solution:
-	A   = sqrt(2)*(1 - 4*(1-4*1i*Xis)./(1 + 4*Xit.^2 + 16*Xis.^2)).*exp(-2.0*1i*Xis);
-	Env = a0*A.*exp(1i*k0*xi1);		% wave envelope
-	eta1 = real(Env).*win;			% windowed free surface elevation
-	
+	eta1 = surface(Conf2Real(eta0));
 	err = norm(eta1 - eta0, inf);
 	eta0 = eta1;
-
 end % while ()
-eta0 = eta0 - mean(eta0);		% we remove the mean
 
 phi0_hat = -1i*fft(eta0).*sk.*sqrt(g./ka);
 phi0_hat(1) = 0.0;
@@ -120,10 +121,10 @@ fftw('planner', 'hybrid');
 
 %%% Time-stepping parameters:
 t    = 0.0;      			% the discrete time variable
-Tf   = 95.0*T0*sqrt(g);		% final simulation time
-dtw  = 0.1;   				% write time of the results
+Tf   = Xend/cg;				% final time (s): the group travels Xend at the speed cg
+dtw  = Tf/round(16*Tf/T0);	% write time of the results: about sixteen times per period (s)
 tol  = 5e-10;  				% tolerance parameter for time stepping
-dt   = 0.01;    			% initial guess of the time step
+dt   = 0.01;    			% initial guess of the time step (s)
 err1 = 1.0;   				% local error guess
 tloc = 0.0;   				% local time variable
 pf   = false;   			% plot flag
@@ -148,27 +149,31 @@ Moment = [];  % List of the momenta at different moments of time
 Energy = [];  % List of the (total) energy values at different moments of time
 Time = [];    % finally the list of times when we compute the invariants
 
-while (t < Tf) % main loop in time
+while (t < Tf - 1e-9) % main loop in time, up to the last write time Tf
 
-    t = t + dt; tloc = tloc + dt;
+    h = dt;                    % the time step taken now
+    t = t + h; tloc = tloc + h;
     
-    % We implement the embedded Cash-Karp method of the order 5(4):
-    k1 = dt*RHS(v, 0);
-    k2 = dt*RHS(v + 0.2*k1, 0.2*dt);
-    k3 = dt*RHS(v + 3/40*k1 + 9/40*k2, 0.3*dt);
-    k4 = dt*RHS(v + 0.3*k1 - 0.9*k2 + 1.2*k3, 0.6*dt);
-    k5 = dt*RHS(v - 11/54*k1 + 2.5*k2 - 70/27*k3 + 35/27*k4, dt);
-    k6 = dt*RHS(v + 1631/55296*k1 + 175/512*k2 + 575/13824*k3 + 44275/110592*k4 + 253/4096*k5, 7/8*dt);
+    % We implement the embedded Cash-Karp method of the order 5(4) for the variable
+    % w(s) = exp(-s*L)*u(t + s), where u = [eta_hat, phi_hat] and L is the linear part of the
+    % equations: RHS(w, s) evaluates the nonlinear terms at the state exp(s*L)*w of the stage
+    % and rotates them back by exp(-s*L) (method of Lawson):
+    k1 = h*RHS(v, 0);
+    k2 = h*RHS(v + 0.2*k1, 0.2*h);
+    k3 = h*RHS(v + 3/40*k1 + 9/40*k2, 0.3*h);
+    k4 = h*RHS(v + 0.3*k1 - 0.9*k2 + 1.2*k3, 0.6*h);
+    k5 = h*RHS(v - 11/54*k1 + 2.5*k2 - 70/27*k3 + 35/27*k4, h);
+    k6 = h*RHS(v + 1631/55296*k1 + 175/512*k2 + 575/13824*k3 + 44275/110592*k4 + 253/4096*k5, 7/8*h);
     
     w = 37/378*k1 + 250/621*k3 + 125/594*k4 + 512/1771*k6;
     w4 = 2825/27648*k1 + 18575/48384*k3 + 13525/55296*k4 + 277/14336*k5 + 0.25*k6;
     
-    % we choose the new time step according to PI control:
+    % we choose the next time step according to PI control:
     err2 = norm(real(ifft(w - w4)), inf);
-    dt = abs(dt)*((tol/err2)^al)*((err1/tol)^be);
+    dt = h*((tol/err2)^al)*((err1/tol)^be);
     err1 = err2;
     
-    v = turn(v + w, -dt); % 5th order solution after changing the variables
+    v = turn(v + w, -h); % 5th order solution, rotated by the linear flow over the step taken
 
     % adjust the time step 
     if ((tloc + dt > dtw) && (~pf))
@@ -253,3 +258,7 @@ while (t < Tf) % main loop in time
     end % if ()
 
 end % while (t)
+
+% Conservation of the mass and of the energy (the Hamiltonian) over the run:
+fprintf('t = %.2f s: mass %.3e m^2 (largest change %.1e m^2), energy %.6e (largest relative change %.1e)\n', ...
+        t, Mass(1), max(abs(Mass - Mass(1))), Energy(1), max(abs(Energy - Energy(1)))/Energy(1));
