@@ -1,15 +1,8 @@
 #!/usr/bin/env python3
 # Dr. Denys Dutykh (Mathematics Department, Khalifa University of Science and Technology, Abu Dhabi, UAE)
 # Stamped copy of the house figure style, version 2026.10.17, made on 2026-11-14 for code that ships
-# with a paper. It is left unchanged here so that the paper's figures stay reproducible; the
-# maintained version lives in claude-config (house-style/python/house_style.py).
+# with a paper. It is left unchanged here so that the paper's figures stay reproducible.
 """House figure style of Dr Dutykh's papers, reports, talks and messages (matplotlib).
-
-This is the single maintained version, kept in the private repository claude-config
-(house-style/python/house_style.py), with its tests and its Makie twin (house-style/julia). It
-descends from the reference module of NLS-cavity, with the Libertine option of the referee kit,
-the text check of polymers-crystal (every panel is checked, not the last one only) and the tick
-test of Babenko-EHD (ticks compared in the scale of the axis, right on logarithmic axes).
 
 Palette, in order of use: navy (the main result), wine (the comparison), teal, ochre, plum,
 lilac; neutrals ink, slate, mist, sand, paper. Colour never carries information alone:
@@ -17,14 +10,12 @@ series also differ by dash pattern and, when marked, by hollow markers. save() r
 figure in which a label, a legend or a colour bar crosses a curve, a field, another label
 or a frame.
 
-Usage, without copying the file:
-    import sys; sys.path.insert(0, "/home/USER/workspace/claude-config/house-style/python")
-    import house_style as hs
+Usage:
+    import manuscript_style as hs
     hs.configure(family="libertine")          # or "latin-modern" for LaTeX articles
     fig, ax = plt.subplots(figsize=(hs.WIDTH, 2.6))
     ax.plot(x, y, **hs.series(0), label="...")
     hs.save(fig, "figures/name.pdf")
-Code that ships with a paper carries a stamped copy instead: `house-style vendor FOLDER`.
 
 Settings read from the environment (the former NLS_ names still work): FIGURE_USETEX=0 avoids
 LaTeX, FIGURE_FORCE=1 writes an overlapping figure for inspection instead of refusing it,
